@@ -1,37 +1,27 @@
 import "source-map-support/register";
+
 import {
   APIGatewayProxyEvent,
   APIGatewayProxyResult,
   APIGatewayProxyHandler
 } from "aws-lambda";
-import * as AWS from "aws-sdk";
 
-const docClient = new AWS.DynamoDB.DocumentClient();
+import { TodoAccess } from "../../utils/TodoAccess";
 
-const tableName = process.env.TODOS_TABLE;
+const todoAccess = new TodoAccess();
 
 export const handler: APIGatewayProxyHandler = async (
   event: APIGatewayProxyEvent
 ): Promise<APIGatewayProxyResult> => {
   const todoId = event.pathParameters.todoId;
 
-  await docClient
-    .delete({
-      TableName: tableName,
-      Key: {
-        todoId
-      }
-    })
-    .promise();
+  await todoAccess.deleteTodo(todoId);
 
   return {
     statusCode: 202,
     headers: {
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Credentials": true
+      "Access-Control-Allow-Origin": "*"
     },
-    body: JSON.stringify({
-      success: true
-    })
+    body: JSON.stringify({})
   };
 };
