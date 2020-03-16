@@ -1,7 +1,7 @@
 {
   "name": "serverless-todo-app",
   "version": "1.0.0",
-  "description": "Serverless TODO image app",
+  "description": "Serverless Todos App",
   "dependencies": {
     "@types/axios": "^0.14.0",
     "@types/http-errors": "^1.6.1",
@@ -12,7 +12,9 @@
     "middy": "^0.27.0",
     "source-map-support": "^0.5.11",
     "uuid": "^3.3.2",
-    "winston": "^3.2.1"
+    "winston": "^3.2.1",
+    "request": "^2.88.0",
+    "request-promise": "^4.2.4"
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.17",
@@ -28,6 +30,6 @@
     "typescript": "^3.4.1",
     "webpack": "^4.29.6"
   },
-  "author": "Ivan Mushketyk",
+  "author": "Patrick Rashidi",
   "license": "MIT"
 }
