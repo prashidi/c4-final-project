@@ -57,6 +57,7 @@ export class TodosAccess {
   }
 
   async updateTodoAttachmentUrl(
+    userId: string,
     todoId: string,
     attachmentUrl: string
   ): Promise<void> {
@@ -64,6 +65,7 @@ export class TodosAccess {
       .update({
         TableName: this.todosTable,
         Key: {
+          userId: userId,
           todoId: todoId
         },
         UpdateExpression: "set attachmentUrl = :attachmentUrl",
@@ -86,11 +88,12 @@ export class TodosAccess {
       .promise();
   }
 
-  async updateTodo(todoId: string, updatedTodo: UpdateTodoRequest): Promise<void>{
+  async updateTodo(userId: string, todoId: string, updatedTodo: UpdateTodoRequest): Promise<void>{
     await this.docClient
       .update({
         TableName: this.todosTable,
         Key: {
+          userId: userId,
           todoId: todoId
         },
         UpdateExpression:

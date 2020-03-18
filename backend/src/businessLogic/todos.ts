@@ -58,11 +58,7 @@ export async function createTodo(
   return todoItem;
 }
 
-export async function generateUploadUrl(
-  event: APIGatewayProxyEvent,
-  generateUploadUrlRequest: GenerateUploadUrlRequest
-): Promise<UploadUrl> {
-  const todoId = event.pathParameters.todoId;
+export async function generateUploadUrl(userId: string, todoId: string, generateUploadUrlRequest: GenerateUploadUrlRequest): Promise<UploadUrl> {
   const attachmentId = uuid.v4();
   logger.info("Generating upload URL:", {
     todoId: todoId,
@@ -76,7 +72,7 @@ export async function generateUploadUrl(
     ...generateUploadUrlRequest
   });
 
-  await todosAccess.updateTodoAttachmentUrl(todoId, attachmentId);
+  await todosAccess.updateTodoAttachmentUrl(userId, todoId, attachmentId);
 
   return uploadUrl;
 }
@@ -86,15 +82,16 @@ export async function deleteTodo(userId: string, todoId: string): Promise<void> 
   await todosAccess.deleteTodo(userId, todoId)
 }
 
-export async function updateTodo(todoId: string, updateTodoRequest: UpdateTodoRequest): Promise<TodoUpdate> {
+export async function updateTodo(userId, todoId: string, updateTodoRequest: UpdateTodoRequest): Promise<TodoUpdate> {
 
-  const updatedToto = {
+  const updatedTodo = {
+    userId,
     todoId,
     ... updateTodoRequest
   }
 
-  await todosAccess.updateTodo(todoId, updatedToto)
+  await todosAccess.updateTodo(userId, todoId, updatedTodo)
 
-  return updatedToto
+  return updatedTodo
 }
 
