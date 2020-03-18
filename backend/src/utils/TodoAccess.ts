@@ -9,7 +9,7 @@ import { CreateTodoRequest } from "../requests/CreateTodoRequest";
 import { UpdateTodoRequest } from "../requests/UpdateTodoRequest";
 const logger = createLogger("todoAccess");
 
-const bucketName = process.env.TODOITEM_S3_BUCKET_NAME;
+const bucketName = process.env.TODOS_S3_BUCKET;
 
 const XAWS = AWSXRay.captureAWS(AWS);
 

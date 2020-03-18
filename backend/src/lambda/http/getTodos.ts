@@ -5,25 +5,27 @@ import {
   APIGatewayProxyHandler
 } from "aws-lambda";
 import { getUserIdFromEvent } from "../../auth/utils";
-import { TodoAccess } from "../../utils/TodoAccess";
+import { getAllTodos } from "../../businessLogic/todos";
+import { createLogger } from '../../utils/logger';
 
-const todoAccess = new TodoAccess();
+const logger = createLogger('getTodosHandler');
 
 export const handler: APIGatewayProxyHandler = async (
   event: APIGatewayProxyEvent
 ): Promise<APIGatewayProxyResult> => {
+
+  logger.info('Get all todos', event);
   const userId = getUserIdFromEvent(event);
 
-  const todos = await todoAccess.getTodos(userId);
+  const items = await getAllTodos(userId);
 
-  // Send results
   return {
     statusCode: 200,
     headers: {
       "Access-Control-Allow-Origin": "*"
     },
     body: JSON.stringify({
-      items: todos
+      items
     })
-  };
+  }
 };

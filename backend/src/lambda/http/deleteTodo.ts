@@ -1,9 +1,9 @@
 import "source-map-support/register";
 
 import {
-  APIGatewayProxyEvent,
-  APIGatewayProxyResult,
-  APIGatewayProxyHandler
+    APIGatewayProxyEvent,
+    APIGatewayProxyResult,
+    APIGatewayProxyHandler
 } from "aws-lambda";
 
 import { TodoAccess } from "../../utils/TodoAccess";
@@ -11,17 +11,17 @@ import { TodoAccess } from "../../utils/TodoAccess";
 const todoAccess = new TodoAccess();
 
 export const handler: APIGatewayProxyHandler = async (
-  event: APIGatewayProxyEvent
+    event: APIGatewayProxyEvent
 ): Promise<APIGatewayProxyResult> => {
-  const todoId = event.pathParameters.todoId;
+    const todoId = event.pathParameters.todoId;
 
-  await todoAccess.deleteTodo(todoId);
+    await todoAccess.deleteTodo(todoId);
 
-  return {
-    statusCode: 202,
-    headers: {
-      "Access-Control-Allow-Origin": "*"
-    },
-    body: JSON.stringify({})
-  };
+    return {
+        statusCode: 202,
+        headers: {
+            "Access-Control-Allow-Origin": "*"
+        },
+        body: JSON.stringify({})
+    };
 };

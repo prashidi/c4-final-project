@@ -5,29 +5,32 @@ import {
   APIGatewayProxyResult
 } from "aws-lambda";
 import { CreateTodoRequest } from "../../requests/CreateTodoRequest";
-import { getUserIdFromEvent } from "../../auth/utils";
-import { TodoAccess } from "../../utils/TodoAccess";
-
-const todoAccess = new TodoAccess();
+import { createTodo } from "../../businessLogic/todos";
 
 export const handler: APIGatewayProxyHandler = async (
   event: APIGatewayProxyEvent
 ): Promise<APIGatewayProxyResult> => {
-  const userId = getUserIdFromEvent(event);
-
   const newTodo: CreateTodoRequest = JSON.parse(event.body);
-  const todoId = await todoAccess.createTodo(userId, newTodo);
+
+  if (!newTodo.name) {
+    return {
+      statusCode: 400,
+      body: JSON.stringify({
+        error: "name is empty"
+      })
+    };
+  }
+
+  const todoItem = await createTodo(event, newTodo);
 
   return {
     statusCode: 201,
     headers: {
-      "Access-Control-Allow-Origin": "*"
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Credentials": true
     },
     body: JSON.stringify({
-      item: {
-        todoId: todoId,
-        ...newTodo
-      }
+      item: todoItem
     })
   };
 };
