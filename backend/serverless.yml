@@ -4,11 +4,27 @@ service:
 plugins:
   - serverless-webpack
   - serverless-iam-roles-per-function
+  - serverless-aws-documentation
+  - serverless-reqvalidator-plugin
 
 custom:
   webpack:
     webpackConfig: ./webpack.config.js
     includeModules: true
+  
+  documentation:
+    api:
+      info:
+        version: v1.0.0
+        title: Udacity Serverless Todos App
+        description: Serverless todo app
+    models:
+      - name: CreateTodo
+        contentType: application/json
+        schema: ${file(models/create-todo-model.json)}
+      - name: UpdateTodo
+        contentType: application/json
+        schema: ${file(models/update-todo-model.json)}
 
 provider:
   name: aws
