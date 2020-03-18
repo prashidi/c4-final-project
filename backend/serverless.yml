@@ -89,6 +89,12 @@ functions:
           path: todos
           authorizer: Auth
           cors: true
+          reqValidatorName: RequestValidator
+          documentation:
+            summary: add new todo
+            description: add new todo
+            requestModels:
+              'application/json': CreateTodo
     iamRoleStatements:
       - Effect: Allow
         Action:
@@ -118,6 +124,12 @@ functions:
           path: todos/{todoId}
           authorizer: Auth
           cors: true
+          reqValidatorName: RequestValidator
+          documentation:
+            summary: update todo
+            description: update todo
+            requestModels:
+              'application/json': UpdateTodo
     iamRoleStatements:
       - Effect: Allow
         Action:
@@ -243,7 +255,14 @@ resources:
               Action: 's3:GetObject'
               Resource: 'arn:aws:s3:::${self:provider.environment.TODOS_S3_BUCKET}/*'
         Bucket: !Ref AttachmentsBucket
-    
+    RequestValidator:
+      Type: AWS::ApiGateway::RequestValidator
+      Properties:
+        Name: 'request-validator'
+        RestApiId:
+          Ref: ApiGatewayRestApi
+        ValidateRequestBody: true
+        ValidateRequestParameters: false
     TodosTable:
       Type: AWS::DynamoDB::Table
       Properties:
