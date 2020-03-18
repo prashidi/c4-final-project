@@ -5,9 +5,7 @@ import {
   APIGatewayProxyResult
 } from "aws-lambda";
 import { UpdateTodoRequest } from "../../requests/UpdateTodoRequest";
-import { TodoAccess } from "../../utils/TodoAccess";
-
-const todoAccess = new TodoAccess();
+import {  updateTodo } from "../../businessLogic/todos";
 
 export const handler: APIGatewayProxyHandler = async (
   event: APIGatewayProxyEvent
@@ -16,7 +14,7 @@ export const handler: APIGatewayProxyHandler = async (
 
   const updatedTodo: UpdateTodoRequest = JSON.parse(event.body);
 
-  await todoAccess.updateTodo(todoId, updatedTodo);
+  await updateTodo(todoId, updatedTodo);
 
   return {
     statusCode: 202,

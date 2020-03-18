@@ -12,6 +12,8 @@ import { TodosAccess } from "../dataLayer/todosAccess";
 import { getUserId } from "../lambda/utils";
 import { createLogger } from "../utils/logger";
 import * as AWSXRay from "aws-xray-sdk";
+import { UpdateTodoRequest } from "../requests/UpdateTodoRequest";
+import { TodoUpdate } from "../models/TodoUpdate";
 
 const XAWS = AWSXRay.captureAWS(AWS);
 
@@ -79,4 +81,20 @@ export async function generateUploadUrl(
   return uploadUrl;
 }
 
+export async function deleteTodo(todoId: string): Promise<void> { 
+
+  await todosAccess.deleteTodo(todoId)
+}
+
+export async function updateTodo(todoId: string, updateTodoRequest: UpdateTodoRequest): Promise<TodoUpdate> {
+
+  const updatedToto = {
+    todoId,
+    ... updateTodoRequest
+  }
+
+  await todosAccess.updateTodo(todoId, updatedToto)
+
+  return updatedToto
+}
 
