@@ -81,9 +81,9 @@ export async function generateUploadUrl(
   return uploadUrl;
 }
 
-export async function deleteTodo(todoId: string): Promise<void> { 
+export async function deleteTodo(userId: string, todoId: string): Promise<void> { 
 
-  await todosAccess.deleteTodo(todoId)
+  await todosAccess.deleteTodo(userId, todoId)
 }
 
 export async function updateTodo(todoId: string, updateTodoRequest: UpdateTodoRequest): Promise<TodoUpdate> {

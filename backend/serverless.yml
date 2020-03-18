@@ -23,7 +23,7 @@ provider:
   environment:
     AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1
     TODOS_TABLE: Todos-${self:provider.stage}
-    TODOS_S3_BUCKET: rash-serverless-todos-attachments-${self:provider.stage}
+    TODOS_S3_BUCKET: rash-todos-attachments-${self:provider.stage}
     TODOS_TABLE_GSI: userIdGsi
     SIGNED_URL_EXPIRATION: 300
 
@@ -233,13 +233,15 @@ resources:
       Properties:
         TableName: ${self:provider.environment.TODOS_TABLE}
         AttributeDefinitions:
-          - AttributeName: todoId
-            AttributeType: S
           - AttributeName: userId
             AttributeType: S
-        KeySchema:
           - AttributeName: todoId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: userId
             KeyType: HASH
+          - AttributeName: todoId
+            KeyType: RANGE
         BillingMode: PAY_PER_REQUEST
         GlobalSecondaryIndexes:
           - IndexName: ${self:provider.environment.TODOS_TABLE_GSI}
